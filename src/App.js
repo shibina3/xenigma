@@ -7,7 +7,7 @@ export default function App() {
     <Routes>
         <Route path="/" element={<Encrypt />} />
         <Route path="/encrypt" element={<div>encrypt</div>}>
-            <Route path="/publickey" element={<div>encrypt public key</div>} />
+            <Route path="/encrypt/publickey" element={<div>encrypt public key</div>} />
         </Route>
     </Routes>
   )
