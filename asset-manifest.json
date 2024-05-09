@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/xenigma/static/css/main.6a32e8ea.css",
-    "main.js": "/xenigma/static/js/main.cae5fc73.js",
+    "main.js": "/xenigma/static/js/main.e6bce7f6.js",
     "static/js/453.cbc24e44.chunk.js": "/xenigma/static/js/453.cbc24e44.chunk.js",
     "index.html": "/xenigma/index.html",
     "main.6a32e8ea.css.map": "/xenigma/static/css/main.6a32e8ea.css.map",
-    "main.cae5fc73.js.map": "/xenigma/static/js/main.cae5fc73.js.map",
+    "main.e6bce7f6.js.map": "/xenigma/static/js/main.e6bce7f6.js.map",
     "453.cbc24e44.chunk.js.map": "/xenigma/static/js/453.cbc24e44.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.6a32e8ea.css",
-    "static/js/main.cae5fc73.js"
+    "static/js/main.e6bce7f6.js"
   ]
 }
