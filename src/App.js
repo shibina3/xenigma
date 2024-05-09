@@ -1,5 +1,6 @@
 import React from 'react'
 import {Routes, Route} from 'react-router-dom'
+import Encrypt from './Encrypt'
 
 export default function App() {
   return (
