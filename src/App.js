@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom';
 import Encrypt from './components/Encrypt';
 import Decrypt from './components/Decrypt';
+import xipher from './xipher';
 
 export default function App() {
     const location = useLocation();
@@ -9,10 +10,10 @@ export default function App() {
     const [page, setPage] = useState('');
 
     useEffect(() => {
-        let secretKey = localStorage.getItem('xipherSecretKey');
-        if (!secretKey) {
-            secretKey = window.xipherNewSecretKey()
-            localStorage.setItem('xipherSecretKey', secretKey);
+        let xSecret = localStorage.getItem('xipherSecret');
+        if (!xSecret) {
+            xSecret = xipher.newSecretKey();
+            localStorage.setItem('xipherSecret', xSecret);
         }
 
         if (location.search) {
@@ -22,12 +23,12 @@ export default function App() {
                 setPublicKey(pKey);
                 setPage('encrypt');
             } else {
-                let publicKey = window.xipherPubKeyFromPrivKey(secretKey, false);
+                let publicKey = xipher.getPublicKey(xSecret);
                 setPublicKey(publicKey);
                 setPage('decrypt');
             }
         } else {
-            let publicKey = window.xipherPubKeyFromPrivKey(secretKey, false);
+            let publicKey = xipher.getPublicKey(xSecret);
             setPublicKey(publicKey);
             setPage('decrypt');
         }

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import xipher from '../xipher';
 
 export default function Decrypt({ pKey }) {
 
@@ -24,8 +25,8 @@ export default function Decrypt({ pKey }) {
     }
 
     const onDecryptText = () => {
-        let secretKey = localStorage.getItem('xipherSecretKey');
-        let decryptedText = window.xipherDecryptStrWithSecretKey(secretKey, text);
+        let xSecret = localStorage.getItem('xipherSecret');
+        let decryptedText = xipher.decryptStr(xSecret, text);
         alert(decryptedText);
     }
 
