@@ -15,7 +15,7 @@ const Encrypt = ({ pKey: publicKey }) => {
     }
 
     return (
-        <main>
+        <main className="main-container">
             <div className="container">
                 <div className="tab-container">
                     <input type="radio" id="r_text" name="radio_choices" value="Text" checked={false} />

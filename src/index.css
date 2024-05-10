@@ -19,7 +19,7 @@ main {
 .container {
   display: grid;
   place-items: center;
-  height: 40%;
+  height: 25%;
 }
 
 .container h2 {
@@ -207,8 +207,13 @@ input[type="radio"]:checked+label {
   flex-direction: column;
   gap: 5px;
   width: 100%;
-  justify-content: center;
+  justify-content: start;
   align-items: center;
+  height: 75%;
+}
+
+#user-input div {
+  width: 100%;
 }
 
 .drop-area {
@@ -226,7 +231,7 @@ input[type="radio"]:checked+label {
 }
 
 #text {
-  width: 615px;
+  width: 87%;
   height: 275px;
 }
 
@@ -239,7 +244,7 @@ button {
 }
 
 .url-container {
-  height: 30vh;
+  height: 25vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -255,9 +260,79 @@ button {
 .url-copy-container {
   display: flex;
   gap: 10px;
+  width: 100%;
+  justify-content: center;
 }
 
 .url-container h3 {
   color: #D83C3C;
   font-weight: 500;
+}
+
+.url-copy-container p {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 69%;
+}
+
+/* Mobile styles for Encrypt Component */
+@media only screen and (max-width: 600px) {
+  .main-container {
+      padding: 0 20px;
+  }
+
+  .text-wrapper {
+      flex-direction: column;
+  }
+
+  .btn {
+      margin-top: 20px;
+  }
+
+  #text {
+    height: 248px;
+  }
+  
+}
+
+/* Desktop styles for Encrypt Component */
+@media only screen and (min-width: 601px) {
+  .main-container {
+      padding: 0 100px;
+  }
+
+  #text {
+    width: 70%;
+  }
+
+  .tab-container {
+    width: 40%;
+  }
+}
+
+/* Mobile styles for Decrypt Component */
+@media only screen and (max-width: 600px) {
+  .url-container {
+      padding: 0 20px;
+  }
+
+  .text-wrapper {
+      flex-direction: column;
+  }
+
+  .btn {
+      margin-top: 20px;
+  }
+}
+
+/* Desktop styles for Decrypt Component */
+@media only screen and (min-width: 601px) {
+  .url-container {
+      padding: 0 100px;
+  }
+
+  .url-copy-container p {
+    width: 80%;
+  }
 }
