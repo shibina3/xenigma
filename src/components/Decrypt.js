@@ -8,7 +8,7 @@ export default function Decrypt({ pKey }) {
 
     useEffect(() => {
         setSecretURL(window.location.href + '?p_key=' + pKey);
-    }, [])
+    }, [pKey])
 
     const onCopyURL = () => {
         navigator.clipboard.writeText(secretURL)
