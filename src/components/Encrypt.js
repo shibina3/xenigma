@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
+import xipher from '../xipher';
 
-const Encrypt = ({ pKey }) => {
+const Encrypt = ({ pKey: publicKey }) => {
     const [text, setText] = useState('');
 
     const handleTextChange = (e) => {
@@ -8,8 +9,7 @@ const Encrypt = ({ pKey }) => {
     }
 
     const handleEncryptText = () => {
-        console.log(pKey, 'pkey');
-        let encryptedText = window.xipherEncryptStr(pKey, text);
+        let encryptedText = xipher.encryptStr(publicKey, text);
         navigator.clipboard.writeText(encryptedText);
         alert('Encrypted text copied to clipboard');
     }
@@ -24,7 +24,7 @@ const Encrypt = ({ pKey }) => {
             </div>
             <section id="user-input">
                 <div className="text-wrapper cf">
-                    <textarea type="text" id="text" value={text} placeholder={"Enter xipher text"} onChange={handleTextChange} />
+                    <textarea type="text" id="text" value={text} placeholder={"Enter text to encrypt"} onChange={handleTextChange} />
                     <button className="btn" onClick={handleEncryptText}>Encrypt</button>
                 </div>
             </section>

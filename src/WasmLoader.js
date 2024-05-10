@@ -6,10 +6,10 @@ export default function WasmLoader({children}) {
     useEffect(() => {
         const go = new window.Go();
         WebAssembly.instantiateStreaming(fetch("https://dev.shib.me/xipher/wasm/xipher.wasm"), go.importObject).then((result) => {
-          console.log('result', result);
           go.run(result.instance);
           setIsLoaded(true);
         });
+        
     },[])
 
   return isLoaded ? children : null;
