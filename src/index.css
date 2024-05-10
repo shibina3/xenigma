@@ -237,3 +237,27 @@ input[type="radio"]:checked+label {
 button {
   border: none;
 }
+
+.url-container {
+  height: 30vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.copyURL {
+  cursor: pointer;
+  color: #D83C3C;
+  font-weight: 500;
+}
+
+.url-copy-container {
+  display: flex;
+  gap: 10px;
+}
+
+.url-container h3 {
+  color: #D83C3C;
+  font-weight: 500;
+}

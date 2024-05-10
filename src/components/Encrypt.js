@@ -2,16 +2,11 @@ import React, { useState } from 'react';
 import CryptoJS from 'crypto-js';
 import FileUpload from './FileUpload';
 
-const Encrypt = () => {
-    const [uploadFileRadio, setUploadFileRadio] = useState(true);
+const Encrypt = ({pKey}) => {
+    const [uploadFileRadio, setUploadFileRadio] = useState(false);  //true
     const [file, setFile] = useState(null);
     const [text, setText] = useState('');
-
-    let secretKey = localStorage.getItem('mySecretKey');
-    if (!secretKey) {
-        secretKey = prompt('Please enter your secret key');
-        localStorage.setItem('mySecretKey', secretKey);
-    }
+    const [secretURL, setSecretURL] = useState('');
 
     const handleTextChange = (e) => {
         setText(e.target.value);
@@ -22,7 +17,8 @@ const Encrypt = () => {
     }
 
     const handleEncryptText = () => {
-        let encryptedText = CryptoJS.AES.encrypt(text, secretKey).toString();
+        console.log(pKey, 'pkey');
+        let encryptedText = window.xipherEncryptStr(pKey, text);
         navigator.clipboard.writeText(encryptedText);
         alert('Encrypted text copied to clipboard');
     }
@@ -30,7 +26,7 @@ const Encrypt = () => {
     const handleEncryptFile = () => {
         let reader = new FileReader();
         reader.onload = function (e) {
-            let encryptedFile = CryptoJS.AES.encrypt(e.target.result, secretKey).toString();
+            let encryptedFile = CryptoJS.AES.encrypt(e.target.result, secretURL).toString();
             let blob = new Blob([encryptedFile], { type: 'text/plain' });
             let url = URL.createObjectURL(blob);
             let a = document.createElement('a');
@@ -50,9 +46,9 @@ const Encrypt = () => {
         <main>
             <div className="container">
                 <div className="tab-container">
-                    <input type="radio" id="r_upload" name="radio_choices" value="Upload" checked={uploadFileRadio} onChange={handleTabChange} />
-                    <label htmlFor="r_upload">Upload a File</label><br />
-                    <input type="radio" id="r_text" name="radio_choices" value="Text" checked={!uploadFileRadio} onChange={handleTabChange} />
+                    {/* <input type="radio" id="r_upload" name="radio_choices" value="Upload" checked={uploadFileRadio} onChange={handleTabChange} />
+                    <label htmlFor="r_upload">Upload a File</label><br /> */}
+                    <input type="radio" id="r_text" name="radio_choices" value="Text" checked={false} />  {/* onChange={handleTabChange} checked={!uploadFileRadio} */}
                     <label htmlFor="r_text">Enter a text</label><br />
                 </div>
             </div>
@@ -69,8 +65,8 @@ const Encrypt = () => {
                         )}
                     </>
                 ) : (
-                    <div className="text-wrapper cf hidden">
-                        <textarea type="text" id="text" value={text} onChange={handleTextChange} />
+                    <div className="text-wrapper cf">
+                        <textarea type="text" id="text" value={text} placeholder={"Enter xipher text"} onChange={handleTextChange} />
                         <button className="btn" onClick={handleEncryptText}>Encrypt</button>
                     </div>
                 )}
