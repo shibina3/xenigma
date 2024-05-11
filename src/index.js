@@ -5,13 +5,15 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import App from './App';
 import WasmLoader from './WasmLoader';
+import NotFound from './components/NotFound';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <Router>
     <WasmLoader>
       <Routes>
-        <Route path="*" element={<App />} />
+        <Route path="/xenigma" element={<App />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </WasmLoader>
   </Router>
