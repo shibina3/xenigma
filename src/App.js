@@ -16,22 +16,20 @@ export default function App() {
             localStorage.setItem('xipherSecret', xSecret);
         }
 
+        let publicKey = xipher.getPublicKey(xSecret);
+        setPublicKey(publicKey);
+
         if (location.search) {
             const searchParams = new URLSearchParams(location.search);
             const pKey = searchParams.get('p_key');
             if (pKey) {
                 setPublicKey(pKey);
                 setPage('encrypt');
-            } else {
-                let publicKey = xipher.getPublicKey(xSecret);
-                setPublicKey(publicKey);
-                setPage('decrypt');
+                return
             }
-        } else {
-            let publicKey = xipher.getPublicKey(xSecret);
-            setPublicKey(publicKey);
-            setPage('decrypt');
         }
+        
+        setPage('decrypt');
     },[location.search])
 
   return page === 'decrypt' ? <Decrypt pKey={publicKey} /> : page === 'encrypt' ? <Encrypt pKey={publicKey} /> : null;
