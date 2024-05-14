@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
-import { HashRouter as Router } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import App from './App';
 import WasmLoader from './WasmLoader';
 
@@ -10,7 +10,9 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <Router>
     <WasmLoader>
-      <App />
+      <Routes>
+        <Route path="*" element={<App />} />
+      </Routes>
     </WasmLoader>
   </Router>
 );
