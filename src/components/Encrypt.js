@@ -8,10 +8,14 @@ const Encrypt = ({ pKey: publicKey }) => {
         setText(e.target.value);
     }
 
-    const handleEncryptText = () => {
-        let encryptedText = xipher.encryptStr(publicKey, text);
-        navigator.clipboard.writeText(encryptedText);
-        alert('Encrypted text copied to clipboard');
+    const handleEncryptText = async () => {
+        try {
+            let encryptedText = xipher.encryptStr(publicKey, text);
+            await navigator.clipboard.writeText(encryptedText);
+            alert('Encrypted text copied to clipboard');
+        } catch (err) {
+            console.error('Failed to copy text: ', err);
+        }
     }
 
     return (
@@ -19,7 +23,7 @@ const Encrypt = ({ pKey: publicKey }) => {
             <div className="container">
                 <div className="tab-container">
                     <input type="radio" id="r_text" name="radio_choices" value="Text" /> {/*checked={false} */}
-                    <label htmlFor="r_text">Enter a text</label><br />
+                    <label htmlFor="r_text" id="enterTextLabel">Enter a text</label><br />
                 </div>
             </div>
             <section id="user-input">
