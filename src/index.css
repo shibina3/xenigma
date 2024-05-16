@@ -6,20 +6,13 @@
 }
 
 body {
-  background-color: #f4f4f4;
-  overflow: hidden;
+  background-color: #FFFFFF;
 }
 
 main {
-  height: 100vh;
   display: flex;
   flex-direction: column;
-}
-
-.container {
-  display: grid;
-  place-items: center;
-  height: 25%;
+  align-items: center;
 }
 
 .container h2 {
@@ -29,18 +22,6 @@ main {
 .tab-container {
   --tab-container-bg: #e3e0e0;
   --tab-container-border: #e3e0e0;
-}
-
-.active,
-input[type="radio"]:checked+label {
-  /* --active-btn-bg: #fffdfa;
-  --active-btn-box-shadow: rgb(172 171 171 / 60%); */
-  --active-btn-text: #D83C3C;
-}
-
-.inactive,
-#enterTextLabel {
-  --inactive-btn-text: #D83C3C;
 }
 
 .tab-container {
@@ -57,60 +38,7 @@ input[type="radio"]:checked+label {
   margin-bottom: 20px;
 }
 
-input[type="radio"] {
-  visibility: hidden;
-  height: 0;
-  width: 0;
-  margin: 0;
-}
-
-#enterTextLabel {
-  width: 45.5%;
-  height: 60%;
-  padding: 10px 20px;
-  border: 0px;
-  border-radius: 8px;
-  cursor: pointer;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  color: var(--inactive-btn-text);
-  font-weight: 700;
-}
-
-input[type="radio"]:checked+label {
-  background-color: var(--active-btn-bg);
-  box-shadow: 0 0 10px 1px var(--active-btn-box-shadow);
-  font-weight: bold;
-  color: var(--active-btn-text);
-}
-
-#filenames {
-  margin-right: 10px;
-}
-
-#removeFile {
-  background-color: red;
-  color: white;
-  border-radius: 50%;
-  cursor: pointer;
-}
-
-#fileInfo {
-  padding-top: 25px;
-}
-
-.file-wrapper {
-  display: flex;
-  width: 100%;
-  justify-content: center;
-  align-items: center;
-  gap: 20px;
-}
-
-.btn {
-  background-color: #D83C3C;
+.button {
   color: white;
   border-radius: 5px;
   cursor: pointer;
@@ -168,21 +96,30 @@ input[type="radio"]:checked+label {
   padding: 0;
   cursor: pointer;
   height: 50px;
-  width: 95px;
+  width: 100px;
   color: white;
-  background: #D83C3C;
-  border-radius: 0 3px 3px 0;
+  border-radius: 7px;
   text-shadow: 0 -1px 0 rgba(0, 0, 0, .3);
 }
 
-.text-wrapper button:hover,
-.file-wrapper button:hover {
-  background: #e54040;
+.encrypt {
+  background: #28A745;
+}
+
+.decrypt {
+  background: #007BFF;
+}
+
+.decrypt:hover {
+  background: #0056b3;
+}
+
+.encrypt:hover {
+  background: #218838;
 }
 
 .text-wrapper button:active,
 .text-wrapper button:focus {
-  background: #c42f2f;
   outline: 0;
 }
 
@@ -214,7 +151,7 @@ input[type="radio"]:checked+label {
   height: 75%;
 }
 
-#user-input div {
+#user-input>div {
   width: 100%;
 }
 
@@ -233,12 +170,23 @@ input[type="radio"]:checked+label {
 }
 
 #text {
-  width: 87%;
-  height: 275px;
+  height: 200px;
+  resize: none;
 }
 
-#fileInput {
-  display: none;
+#decryptedText {
+  resize: none;
+  height: 100px;
+}
+
+.decryptBox {
+  border: 1px solid #ccc;
+  padding: 30px;
+  background-color: #f4f4f4;
+}
+
+.fs-14 {
+  font-size: 14px !important;
 }
 
 button {
@@ -253,23 +201,33 @@ button {
   align-items: center;
 }
 
-.copyURL,
-.generateURL {
-  cursor: pointer;
-  color: #D83C3C;
-  font-weight: 500;
-  background-color: #f5f5f5;
+.color-yellow {
+  color: #FFC107;
+}
+
+.w-35 {
+  width: 35% !important;
+}
+
+.w-80 {
+  width: 80% !important;
+}
+
+.copyURL {
+  background-color: #28A745 !important;
+  border-radius: 0 12px 12px 0 !important;
+  border: 1px solid #28A745 !important;
+  width: 20%;
 }
 
 .url-copy-container {
-  display: flex;
-  gap: 10px;
-  width: 100%;
-  justify-content: center;
+  background-color: #F7F7F7;
+  border: 1px solid #E0E0E0;
+  border-radius: 12px;
 }
 
 .url-container h3 {
-  color: #D83C3C;
+  color: #333333;
   font-weight: 500;
 }
 
@@ -277,77 +235,46 @@ button {
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
-  width: 69%;
+  width: 80%;
+  color: #B0B0B0;
 }
 
-/* Mobile styles for Encrypt Component */
 @media only screen and (max-width: 600px) {
-  .main-container {
-    padding: 0 20px;
+  .copyURL {
+    width: 35%;
   }
 
-  .text-wrapper {
-    flex-direction: column;
-  }
-
-  .btn {
-    margin-top: 20px;
-  }
-
-  #text {
-    height: 248px;
-  }
-
-}
-
-/* Desktop styles for Encrypt Component */
-@media only screen and (min-width: 601px) {
-  .main-container {
-    padding: 0 100px;
-  }
-
-  #text {
-    width: 70%;
-  }
-
-  .tab-container {
-    width: 40%;
-  }
-}
-
-/* Mobile styles for Decrypt Component */
-@media only screen and (max-width: 600px) {
-  .url-container {
-    padding: 0 20px;
-  }
-
-  .text-wrapper {
-    flex-direction: column;
-  }
-
-  .btn {
-    margin-top: 20px;
-  }
-}
-
-/* Desktop styles for Decrypt Component */
-@media only screen and (min-width: 601px) {
-  .url-container {
-    padding: 0 150px;
+  .copyText {
+    width: 25% !important;
   }
 
   .url-copy-container p {
-    width: 75%;
+    width: 65%;
+  }
+}
+
+@media only screen and (min-width: 601px) {
+  .copyURL {
+    width: 20%;
   }
 }
 
 #r_password {
-  color: #D83C3C;
+  color: #1E1E1E;
   font-size: 16px;
   border: none;
   background-color: #f5f5f5;
   cursor: pointer;
   width: 15%;
+  border-radius: 12px 0 0 12px;
+}
+
+#r_password:hover {
+  background-color: #F0F0F0;
+}
+
+.copyURL:hover {
+  background-color: #218838;
 }
 
 #r_password:focus {
@@ -394,45 +321,29 @@ button {
 }
 
 .topBar {
-  display: flex;
-  justify-content: end;
-  gap: 10px;
-  color: #D83C3C;
+  color: #333333;
   padding: 10px 20px;
-}
-
-.arrow {
-  cursor: pointer;
   position: relative;
-  content: "";
-  display: inline-block;
-  width: 6px;
-  height: 6px;
-  border-right: 0.2em solid #D83C3C;
-  border-top: 0.2em solid #D83C3C;
-  margin-right: 0.5em;
-  margin-left: 1.0em;
-}
-
-.down {
-  transform: rotate(135deg);
-  top: -2px;
-}
-
-.up {
-  transform: rotate(315deg);
 }
 
 .arrow-container {
-  position: relative;
-  display: inline-block;
+  border: 1px solid #ccc !important;
+  background-color: #FFFFFF !important;
+}
+
+.color-black {
+  color: black !important;
+}
+
+.arrow-container>span {
+  margin-left: 3px;
 }
 
 .popup {
   position: absolute;
-  width: 300px;
-  left: -31px;
-  top: 30px;
+  right: -155px;
+  top: 0;
+  border-radius: 8px;
   transform: translateX(-50%);
   background-color: #f9f9f9;
   border: 1px solid #ccc;
@@ -457,7 +368,8 @@ button {
   border: none;
 }
 
-.user-details input:focus, select:focus {
+.user-details input:focus,
+select:focus {
   outline: none;
 }
 
@@ -465,11 +377,21 @@ button {
   background-color: #f9f9f9;
   margin-top: 8px;
   padding: 0;
-  color: #D83C3C;
   cursor: pointer;
   font-weight: bold;
 }
 
 .button-disabled {
-  color: #ccc; 
+  color: #ccc;
+}
+
+.bold-500 {
+  font-weight: 500;
+}
+
+.copyText {
+  background-color: #28A745 !important;
+  border-radius: 12px !important;
+  border: 1px solid #28A745 !important;
+  width: 20%;
 }

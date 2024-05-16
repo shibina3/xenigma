@@ -1,36 +1,21 @@
 import React, { useEffect, useState } from 'react'
 import xipher from '../xipher';
+import { IoLockOpen } from "react-icons/io5";
+import URLContainer from './URLContainer';
+import { Button, Form, Row } from 'react-bootstrap';
 
 export default function Decrypt({ pKey: publicKey, userDetails }) {
 
     const [secretURL, setSecretURL] = useState('');
     const [copyBtnText, setCopyBtnText] = useState('Copy URL');
     const [text, setText] = useState('');
-    const [selectedOption, setSelectedOption] = useState('privateKey');
-    const [isLoading, setIsLoading] = useState(false);
-
-    const handleOptionChange = (e) => {
-        if(!localStorage.getItem('password')) return alert('Please set a password in User Settings to use this option');
-        setIsLoading(true);
-        setSelectedOption(e.target.value);
-        try {
-            let url = window.location.href.endsWith('/') ? window.location.href.slice(0, -1) : window.location.href;
-            if (e.target.value === 'password') {
-                setSecretURL(url + '?pk=' + xipher.getPublicKey(userDetails.password));
-            } else {
-                setSecretURL(url + '?pk=' + publicKey);
-            }
-        } catch (err) {
-            console.error('Failed to generate public key: ', err);
-            alert(err)
-        } finally {
-            setIsLoading(false);
-        }
-    };
+    const [isDecrypted, setIsDecrypted] = useState(false);
+    const [decryptedText, setDecryptedText] = useState('');
+    const [decryptedCopyBtnText, setDecryptedCopyBtnText] = useState('Copy');
 
     useEffect(() => {
-        let url = window.location.href.endsWith('/') ? window.location.href.slice(0, -1) : window.location.href;
-        setSecretURL(url + '?pk=' + publicKey);
+        let url = (window.location.href.endsWith('/') ? window.location.href.slice(0, -1) : window.location.href) + '?pk=' + publicKey + (localStorage.getItem('username') && localStorage.getItem('username').toLowerCase() !== 'user' ? '&username=' + localStorage.getItem('username') : '');
+        setSecretURL(url);
     }, [publicKey])
 
     const onCopyURL = () => {
@@ -46,35 +31,49 @@ export default function Decrypt({ pKey: publicKey, userDetails }) {
             })
     }
 
+    const onDecryptCopyURL = () => {
+        navigator.clipboard.writeText(decryptedText)
+            .then(() => {
+                setDecryptedCopyBtnText('Copied');
+                setTimeout(() => {
+                    setDecryptedCopyBtnText('Copy');
+                }, 2000);
+            })
+            .catch(err => {
+                console.error('Failed to copy: ', err);
+            })
+    }
+
     const onDecryptText = () => {
         try {
+            if (!text) return alert('Please enter encrypted text to decrypt')
             let xSecret = localStorage.getItem('xipherSecret');
-            let decryptedText = (selectedOption === 'password') ? xipher.decryptStr(userDetails.password, text) : xipher.decryptStr(xSecret, text);
-            alert(decryptedText);
+            let decryptedText = xipher.decryptStr(xSecret, text);
+            setDecryptedText(decryptedText);
+            setIsDecrypted(true);
         } catch (err) {
             console.error('Failed to decrypt text: ', err);
         }
     }
 
     return (
-        <div>
+        <Row className='col-lg-6 mx-auto'>
             {secretURL ? (
-                <div className='url-container'>
-                    <h3>Your sharable encryption URL</h3>
-                    <div className='url-copy-container'>
-                        <select id="r_password" name="encryption_choices" value={selectedOption} onChange={handleOptionChange}>
-                            <option value="privateKey">Use Private Key</option>
-                            <option value="password">Use Password</option>
-                        </select>
-                        <p>{isLoading ? 'Please wait while we generate your URL...' : secretURL}</p>
-                        <button className='copyURL' onClick={onCopyURL}>{copyBtnText}</button>
-                    </div>
-                </div>
+                <URLContainer title={"Share this encrypted URL with someone to receive a secret"} url={secretURL} copyBtnText={copyBtnText} onCopyURL={onCopyURL} />
             ) : null}
-            <div className="text-wrapper cf">
-                <textarea type="text" placeholder={"Enter encrypted text"} value={text} id="text" onChange={(e) => setText(e.target.value)} />
-                <button className="btn" onClick={onDecryptText}>Decrypt</button>
+            <div className="text-wrapper mb-5">
+                <Form.Control as={"textarea"} placeholder={"Enter encrypted text"} value={text} id="text" className='w-100 fs-14' onChange={(e) => setText(e.target.value)} />
+                <Button onClick={onDecryptText}>Decrypt <IoLockOpen /></Button>
             </div>
-        </div>
+            {
+                isDecrypted ? (
+                <div className='d-flex flex-column gap-3 decryptBox mb-5 align-items-center justify-content-center text-center'>
+                        <h6>The decrypted secret shared with you is displayed below</h6>
+                        <Form.Control as={"textarea"} placeholder={"Decrypted text"} value={decryptedText} id="decryptedText" className='w-80 fs-14' readOnly />
+                        <Button className='copyText' onClick={onDecryptCopyURL}>{decryptedCopyBtnText}</Button>
+                    </div>
+                ) : null
+            }
+        </Row>
     )
 }

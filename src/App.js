@@ -3,16 +3,21 @@ import { useLocation } from 'react-router-dom';
 import Encrypt from './components/Encrypt';
 import Decrypt from './components/Decrypt';
 import xipher from './xipher';
+import { MdKeyboardArrowDown, MdKeyboardArrowUp } from "react-icons/md";
+import { Button, Container, Row, Col, Overlay, Tooltip } from 'react-bootstrap';
 
 export default function App() {
     const location = useLocation();
     const [publicKey, setPublicKey] = useState('');
+    const [requester, setRequester] = useState('');
     const [page, setPage] = useState('');
     const [showPopup, setShowPopup] = useState(false);
     const [username, setUsername] = useState(localStorage.getItem('username') || 'User');
-    const [password, setPassword] = useState(localStorage.getItem('password') || ''); 
+    const [password, setPassword] = useState(localStorage.getItem('password') || '');
     const [isUpdated, setIsUpdated] = useState(false);
-    const popupRef = useRef();
+    const popupRef = useRef(null);
+    const nameRef = useRef(null);
+    const passwordRef = useRef(null);
 
     useEffect(() => {
         let xSecret = localStorage.getItem('xipherSecret');
@@ -27,6 +32,9 @@ export default function App() {
         if (location.search) {
             const searchParams = new URLSearchParams(location.search);
             const pKey = searchParams.get('pk');
+            const request = searchParams.get('username');
+            console.log('Requester: ', request);
+            if(request) setRequester(request);
             if (pKey) {
                 setPublicKey(pKey);
                 setPage('encrypt');
@@ -37,72 +45,62 @@ export default function App() {
         setPage('decrypt');
     }, [location.search])
 
-    const handleUsernameChange = (e) => {
-        setUsername(e.target.value);
-        setIsUpdated(true);
-    };
-
-    const handlePasswordChange = (e) => {
-        setPassword(e.target.value);
-        setIsUpdated(true);
-    };
-
     useEffect(() => {
         if (username !== localStorage.getItem('username') || password !== localStorage.getItem('password')) {
             setIsUpdated(true);
         }
     }, [username, password])
 
-    useEffect(() => {
-        function handleClickOutside(event) {
-            if (popupRef.current && !popupRef.current.contains(event.target) && event.target.className.indexOf('arrow') === -1) {
-                setShowPopup(false);
-            }
-        }
-        document.addEventListener("mousedown", handleClickOutside);
-        
-        return () => {
-            document.removeEventListener("mousedown", handleClickOutside);
-        };
-    }, [popupRef]);
-
     const updateUserDetails = () => {
-        localStorage.setItem('username', username);
-        localStorage.setItem('password', password);
-        setUsername(username);
-        setPassword(password);
+        localStorage.setItem('username', nameRef.current.value);
+        localStorage.setItem('password', passwordRef.current.value);
+        setUsername(nameRef.current.value);
+        setPassword(passwordRef.current.value);
         setIsUpdated(false);
     }
 
     return (
-        <>
-            <div className="topBar">
-                <div className="arrow-container">
-                    <div className={`arrow ${showPopup ? 'up' : 'down'}`} onClick={() => setShowPopup(!showPopup)}></div>
-                    {showPopup && (
-                        <div className="popup" ref={popupRef}>
-                            <div className="popup-title">User Details</div>
-                            <div className="popup-content">
-                                <div className="user-details">
-                                    <div>
-                                        <label>Set Username: </label>
-                                        <input type='text' defaultValue={username} onChange={handleUsernameChange} />
+        <Container fluid>
+            <Row>
+                <Col className='d-flex justify-content-end'>
+                    <Button variant='secondary' size='md' className="arrow-container color-black mt-2" ref={popupRef} onClick={() => setShowPopup(!showPopup)}>
+                        {showPopup ? <MdKeyboardArrowUp /> : <MdKeyboardArrowDown />}
+                        <span>Hi <b className={username !== 'User' ? 'bold-500' : ''}>{username}</b>!</span>
+                    </Button>
+                    <Overlay target={popupRef.current} show={showPopup} placement="bottom" rootClose={true} onHide={() => setShowPopup(false)}>
+                        {(props) => (
+                            <Tooltip placement='bottom' id="overlay" {...props}>
+                                <div className="popup color-black">
+                                    <div className="popup-title">User Details</div>
+                                    <div className="popup-content">
+                                        <div className="user-details">
+                                            <div>
+                                                <label>Update Username: </label>
+                                                <input type='text' ref={nameRef} defaultValue={username} onChange={() => setIsUpdated(true)} />
+                                            </div>
+                                            <div>
+                                                <label>Update Key/Password: </label>
+                                                <input type='password' ref={passwordRef} defaultValue={password} onChange={() => setIsUpdated(true)} />
+                                            </div>
+                                            <button className={`update-user-details ${!isUpdated ? 'button-disabled' : ''}`} onClick={updateUserDetails} disabled={!isUpdated} >Update</button>
+                                        </div>
                                     </div>
-                                    <div>
-                                        <label>Set Password: </label>
-                                        <input type='password' defaultValue={password} onChange={handlePasswordChange} />
-                                    </div>
-                                    <button className={`update-user-details ${!isUpdated ? 'button-disabled' : ''}`} onClick={updateUserDetails} disabled={!isUpdated} >Update</button>
                                 </div>
-                            </div>
-                        </div>
-                    )}
-                </div>
-                <span>Hello {username}!</span>
-            </div>
+                            </Tooltip>
+                        )}
+                    </Overlay>
+                </Col>
+            </Row>
+            <Row>
+                <Col>
+                    <h1 className='text-center mt-3 mb-3'>Xenigma</h1>
+                    <h3 className='text-center'>Secure Secrets Exchange</h3>
+                    <p className='text-center mt-3 mb-5'>With Xenigma, you can request and share secrets <br />securely, ensuring that your data remains private and never touches a server.</p>
+                </Col>
+            </Row>
             {
-                page === 'decrypt' ? <Decrypt pKey={publicKey} userDetails={{username: username, password: password}} /> : page === 'encrypt' ? <Encrypt pKey={publicKey} /> : null
+                page === 'decrypt' ? <Decrypt pKey={publicKey} userDetails={{ username: username, password: password }} /> : page === 'encrypt' ? <Encrypt requester={requester} pKey={publicKey} /> : null
             }
-        </>
+        </Container>
     );
 }
