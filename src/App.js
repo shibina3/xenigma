@@ -51,10 +51,12 @@ export default function App() {
     }, [username, password])
 
     const updateUserDetails = () => {
-        localStorage.setItem('username', nameRef.current.value);
-        localStorage.setItem('password', passwordRef.current.value);
-        setUsername(nameRef.current.value);
-        setPassword(passwordRef.current.value);
+        let name = nameRef.current.value || 'User';
+        let pass = passwordRef.current.value
+        localStorage.setItem('username', name);
+        localStorage.setItem('password', pass);
+        setUsername(name);
+        setPassword(pass);
         setIsUpdated(false);
     }
 
@@ -70,7 +72,7 @@ export default function App() {
                         {(props) => (
                             <Tooltip placement='bottom' id="overlay" {...props}>
                                 <div className="popup color-black">
-                                    <div className="popup-title">User Details</div>
+                                    <div className="popup-title">Update User Details</div>
                                     <div className="popup-content">
                                         <div className="user-details">
                                             <div>
