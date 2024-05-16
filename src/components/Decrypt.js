@@ -4,7 +4,7 @@ import { IoLockOpen } from "react-icons/io5";
 import URLContainer from './URLContainer';
 import { Button, Form, Row } from 'react-bootstrap';
 
-export default function Decrypt({ pKey: publicKey, userDetails }) {
+export default function Decrypt({ pKey: publicKey }) {
 
     const [secretURL, setSecretURL] = useState('');
     const [copyBtnText, setCopyBtnText] = useState('Copy URL');
@@ -14,7 +14,7 @@ export default function Decrypt({ pKey: publicKey, userDetails }) {
     const [decryptedCopyBtnText, setDecryptedCopyBtnText] = useState('Copy');
 
     useEffect(() => {
-        let url = (window.location.href.endsWith('/') ? window.location.href.slice(0, -1) : window.location.href) + '?pk=' + publicKey + (localStorage.getItem('username') && localStorage.getItem('username').toLowerCase() !== 'user' ? '&username=' + localStorage.getItem('username') : '');
+        let url = (window.location.href.endsWith('/') ? window.location.href.slice(0, -1) : window.location.href) + '?pk=' + publicKey + (localStorage.getItem('username') && localStorage.getItem('username').toLowerCase() !== 'user' ? '&u=' + localStorage.getItem('username') : '');
         setSecretURL(url);
     }, [publicKey])
 

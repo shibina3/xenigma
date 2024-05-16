@@ -32,9 +32,8 @@ export default function App() {
         if (location.search) {
             const searchParams = new URLSearchParams(location.search);
             const pKey = searchParams.get('pk');
-            const request = searchParams.get('username');
-            console.log('Requester: ', request);
-            if(request) setRequester(request);
+            const user = searchParams.get('u');
+            if(user) setRequester(user);
             if (pKey) {
                 setPublicKey(pKey);
                 setPage('encrypt');
@@ -65,7 +64,7 @@ export default function App() {
                 <Col className='d-flex justify-content-end'>
                     <Button variant='secondary' size='md' className="arrow-container color-black mt-2" ref={popupRef} onClick={() => setShowPopup(!showPopup)}>
                         {showPopup ? <MdKeyboardArrowUp /> : <MdKeyboardArrowDown />}
-                        <span>Hi <b className={username !== 'User' ? 'bold-500' : ''}>{username}</b>!</span>
+                        <span>Hi <span className={username !== 'User' ? 'bold-500' : ''}>{username}</span>!</span>
                     </Button>
                     <Overlay target={popupRef.current} show={showPopup} placement="bottom" rootClose={true} onHide={() => setShowPopup(false)}>
                         {(props) => (
@@ -99,7 +98,7 @@ export default function App() {
                 </Col>
             </Row>
             {
-                page === 'decrypt' ? <Decrypt pKey={publicKey} userDetails={{ username: username, password: password }} /> : page === 'encrypt' ? <Encrypt requester={requester} pKey={publicKey} /> : null
+                page === 'decrypt' ? <Decrypt pKey={publicKey} /> : page === 'encrypt' ? <Encrypt requester={requester} pKey={publicKey} /> : null
             }
         </Container>
     );
