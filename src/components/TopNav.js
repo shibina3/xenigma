@@ -97,12 +97,13 @@ export default function TopNav() {
                                                 <div ref={passBtnRef} className='popupInner'>
                                                     <InputGroup className="mb-3 name-input">
                                                         <Form.Control
+                                                            className='fs-14'
                                                             type={showPassword ? 'text' : 'password'} 
                                                             ref={passwordRef} 
                                                             defaultValue={password} 
                                                             onChange={() => setIsPassUpdated(true)} 
-                                                            placeholder="Type a password"
-                                                            aria-label="Type a password"
+                                                            placeholder="password"
+                                                            aria-label="password"
                                                             aria-describedby="basic-addon2"
                                                         />
                                                         <InputGroup.Text id="basic-addon2">{
