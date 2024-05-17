@@ -53,41 +53,6 @@ main {
   align-items: center;
 }
 
-.text-wrapper input,
-.password-wrapper input {
-  width: 138px;
-  padding: 10px 5px;
-  float: left;
-  border: 0;
-  background: #EEE;
-  border-radius: 3px 0 0 3px;
-}
-
-.text-wrapper input:focus,
-.password-wrapper input:focus {
-  outline: 0;
-  background: #fff;
-  box-shadow: 0 0 2px rgba(0, 0, 0, .8) inset;
-}
-
-.text-wrapper input::-webkit-input-placeholder {
-  color: #999;
-  font-weight: normal;
-  font-style: italic;
-}
-
-.text-wrapper input:-moz-placeholder {
-  color: #999;
-  font-weight: normal;
-  font-style: italic;
-}
-
-.text-wrapper input:-ms-input-placeholder {
-  color: #999;
-  font-weight: normal;
-  font-style: italic;
-}
-
 .text-wrapper button {
   overflow: visible;
   position: relative;
@@ -170,8 +135,17 @@ main {
 }
 
 #text {
+  height: 60px;
+  resize: none;
+}
+
+#textarea {
   height: 200px;
   resize: none;
+}
+
+.h-60 {
+  height: 60px;
 }
 
 #decryptedText {
@@ -231,6 +205,10 @@ button {
   font-weight: 500;
 }
 
+.w-70 {
+  width: 70% !important;
+}
+
 .url-copy-container p {
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -251,11 +229,30 @@ button {
   .url-copy-container p {
     width: 65%;
   }
+  
 }
 
-@media only screen and (min-width: 601px) {
+@media only screen and (min-width: 1024px) and (max-width: 1024px) {
+  .main-container {
+    padding: 0 !important;
+  }
+}
+
+@media only screen and (min-width: 601px) and (max-width: 1023px) {
   .copyURL {
     width: 20%;
+  }
+  .main-container {
+    padding: 0 100px !important;
+  }
+}
+
+@media screen and (min-width: 1025px) {
+  .copyURL {
+    width: 20%;
+  }
+  .main-container {
+    padding: 0 100px !important;
   }
 }
 
@@ -341,7 +338,7 @@ button {
 
 .popup {
   position: absolute;
-  right: -155px;
+  right: -185px;
   top: 0;
   border-radius: 8px;
   transform: translateX(-50%);
@@ -349,6 +346,22 @@ button {
   border: 1px solid #ccc;
   padding: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.popupInner {
+  position: absolute;
+  right: -85px;
+  top: -30px;
+  border-radius: 8px;
+  transform: translateX(-50%);
+  background-color: #f9f9f9;
+  border: 1px solid #ccc;
+  padding: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.popupInner > input {
+  width: 150px;
 }
 
 .popup-title {
@@ -394,4 +407,12 @@ select:focus {
   border-radius: 12px !important;
   border: 1px solid #28A745 !important;
   width: 20%;
+}
+
+.drop-btn {
+  text-decoration: none !important;
+}
+
+.fs-14 {
+  font-size: 14px !important;
 }

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import xipher from '../xipher';
 import { IoLockOpen } from "react-icons/io5";
 import URLContainer from './URLContainer';
-import { Button, Form, Row } from 'react-bootstrap';
+import { Button, Col, Form, Row } from 'react-bootstrap';
 
 export default function Decrypt({ pKey: publicKey }) {
 
@@ -58,22 +58,24 @@ export default function Decrypt({ pKey: publicKey }) {
 
     return (
         <Row className='col-lg-6 mx-auto'>
-            {secretURL ? (
-                <URLContainer title={"Share this encrypted URL with someone to receive a secret"} url={secretURL} copyBtnText={copyBtnText} onCopyURL={onCopyURL} />
-            ) : null}
-            <div className="text-wrapper mb-5">
-                <Form.Control as={"textarea"} placeholder={"Enter encrypted text"} value={text} id="text" className='w-100 fs-14' onChange={(e) => setText(e.target.value)} />
-                <Button onClick={onDecryptText}>Decrypt <IoLockOpen /></Button>
-            </div>
-            {
-                isDecrypted ? (
-                <div className='d-flex flex-column gap-3 decryptBox mb-5 align-items-center justify-content-center text-center'>
-                        <h6>The decrypted secret shared with you is displayed below</h6>
-                        <Form.Control as={"textarea"} placeholder={"Decrypted text"} value={decryptedText} id="decryptedText" className='w-80 fs-14' readOnly />
-                        <Button className='copyText' onClick={onDecryptCopyURL}>{decryptedCopyBtnText}</Button>
-                    </div>
-                ) : null
-            }
+            <Col className='main-container align-items-center justify-content-center d-flex flex-column'>
+                {secretURL ? (
+                    <URLContainer title={"Share this encrypted URL with someone to receive a secret"} url={secretURL} copyBtnText={copyBtnText} onCopyURL={onCopyURL} />
+                ) : null}
+                <div className="w-100 d-flex align-items-center justify-content-center gap-2 mb-5">
+                    <Form.Control as={"input"} placeholder={"Enter encrypted text"} value={text} id="text" className='fs-14' onChange={(e) => setText(e.target.value)} />
+                    <Button className='w-25 h-60' onClick={onDecryptText}>Decrypt <IoLockOpen /></Button>
+                </div>
+                {
+                    isDecrypted ? (
+                        <div className='d-flex flex-column gap-3 decryptBox mb-5 align-items-center justify-content-center text-center'>
+                            <h6>The decrypted secret shared with you is displayed below</h6>
+                            <Form.Control as={"textarea"} placeholder={"Decrypted text"} value={decryptedText} id="decryptedText" className='w-80 fs-14' readOnly />
+                            <Button className='copyText' onClick={onDecryptCopyURL}>{decryptedCopyBtnText}</Button>
+                        </div>
+                    ) : null
+                }
+            </Col>
         </Row>
     )
 }

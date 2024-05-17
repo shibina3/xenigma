@@ -42,7 +42,7 @@ const Encrypt = ({ pKey: publicKey, requester }) => {
         <Row className='col-lg-6 mx-auto'>
                 <p className='text-center'>A secret has been requested{requester ? <span> by <b>{requester}</b></span> :''}. <br />Only the requester will have access to the information you provide.</p>
                 <div className="text-wrapper mb-5">
-                    <Form.Control as="textarea" className='w-100 fs-14' id="text" value={text} placeholder={"Enter the information you wish to share"} onChange={handleTextChange} />
+                    <Form.Control as="textarea" className='w-100 fs-14' id="textarea" value={text} placeholder={"Enter the information you wish to share"} onChange={handleTextChange} />
                     <button className="button encrypt" onClick={handleEncryptText}>Encrypt <IoLockClosed /></button>
                 </div>
                 {
