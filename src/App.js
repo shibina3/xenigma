@@ -44,10 +44,10 @@ export default function App() {
             </Row>
             <Row>
                 <Col>
-                    <h1 className='text-center mt-5 mb-3'>Xenigma</h1>
+                    <h1 className='text-center mt-5 mb-3'>XEnigma</h1>
                     <h3 className='text-center'>Secure Secrets Exchange</h3>
                     <br />
-                    <p className='text-center mt-3 mb-5'>With Xenigma, you can request and share secrets <br />securely, ensuring that your data remains private and never touches a server.</p>
+                    <p className='text-center mt-3 mb-5'>With XEnigma, you can request and share secrets <br />securely, ensuring that your data remains private and never touches a server.</p>
                 </Col>
             </Row>
             {
