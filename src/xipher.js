@@ -1,30 +1,30 @@
 const xipher = {
-    newSecretKey() {
-        const response = JSON.parse(window.xipherNewSecretKey());
+    async newSecretKey() {
+        const response = JSON.parse(await window.xipherNewSecretKey());
         if (response.error) {
             throw new Error(response.error);
         }
         return response.result;
     },
 
-    getPublicKey(xSecret) {
-        const response = JSON.parse(window.xipherGetPublicKey(xSecret));
+    async getPublicKey(xSecret) {
+        const response = JSON.parse(await window.xipherGetPublicKey(xSecret));
         if (response.error) {
             throw new Error(response.error);
         }
         return response.result;
     },
 
-    encryptStr(publicKey, str) {
-        const response = JSON.parse(window.xipherEncryptStr(publicKey, str));
+    async encryptStr(publicKey, str) {
+        const response = JSON.parse(await window.xipherEncryptStr(publicKey, str));
         if (response.error) {
             throw new Error(response.error);
         }
         return response.result;
     },
 
-    decryptStr(xSecret, cipherText) {
-        const response = JSON.parse(window.xipherDecryptStr(xSecret, cipherText));
+    async decryptStr(xSecret, cipherText) {
+        const response = JSON.parse(await window.xipherDecryptStr(xSecret, cipherText));
         if (response.error) {
             throw new Error(response.error);
         }

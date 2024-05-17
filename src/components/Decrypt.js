@@ -4,55 +4,46 @@ import { IoLockOpen } from "react-icons/io5";
 import URLContainer from './URLContainer';
 import { Button, Col, Form, Row } from 'react-bootstrap';
 
-export default function Decrypt({ pKey: publicKey }) {
+const useClipboard = (initialText) => {
+    const [copyBtnText, setCopyBtnText] = useState(initialText);
 
-    const [secretURL, setSecretURL] = useState('');
-    const [copyBtnText, setCopyBtnText] = useState('Copy URL');
+    const copyToClipboard = (text) => {
+        navigator.clipboard.writeText(text)
+            .then(() => {
+                setCopyBtnText('Copied');
+                setTimeout(() => {
+                    setCopyBtnText(initialText);
+                }, 2000);
+            })
+            .catch(err => {
+                console.error('Failed to copy: ', err);
+            })
+    }
+
+    return [copyBtnText, copyToClipboard];
+}
+
+export default function Decrypt({ pKey: publicKey, secretURL, setSecretURL, reGenerateURL }) {
     const [text, setText] = useState('');
     const [isDecrypted, setIsDecrypted] = useState(false);
     const [decryptedText, setDecryptedText] = useState('');
-    const [decryptedCopyBtnText, setDecryptedCopyBtnText] = useState('Copy');
+    const [error, setError] = useState(null);
+    const [copyBtnText, copyToClipboard] = useClipboard('Copy');
 
     useEffect(() => {
         let url = (window.location.href.endsWith('/') ? window.location.href.slice(0, -1) : window.location.href) + '?pk=' + publicKey + (localStorage.getItem('username') && localStorage.getItem('username').toLowerCase() !== 'user' ? '&u=' + localStorage.getItem('username') : '');
         setSecretURL(url);
-    }, [publicKey])
+    }, [publicKey, setSecretURL])
 
-    const onCopyURL = () => {
-        navigator.clipboard.writeText(secretURL)
-            .then(() => {
-                setCopyBtnText('Copied');
-                setTimeout(() => {
-                    setCopyBtnText('Copy URL');
-                }, 2000);
-            })
-            .catch(err => {
-                console.error('Failed to copy: ', err);
-            })
-    }
-
-    const onDecryptCopyURL = () => {
-        navigator.clipboard.writeText(decryptedText)
-            .then(() => {
-                setDecryptedCopyBtnText('Copied');
-                setTimeout(() => {
-                    setDecryptedCopyBtnText('Copy');
-                }, 2000);
-            })
-            .catch(err => {
-                console.error('Failed to copy: ', err);
-            })
-    }
-
-    const onDecryptText = () => {
+    const onDecryptText = async () => {
         try {
             if (!text) return alert('Please enter encrypted text to decrypt')
             let xSecret = localStorage.getItem('xipherSecret');
-            let decryptedText = xipher.decryptStr(xSecret, text);
+            let decryptedText = await xipher.decryptStr(xSecret, text);
             setDecryptedText(decryptedText);
             setIsDecrypted(true);
         } catch (err) {
-            console.error('Failed to decrypt text: ', err);
+            setError('Failed to decrypt text');
         }
     }
 
@@ -60,7 +51,7 @@ export default function Decrypt({ pKey: publicKey }) {
         <Row className='col-lg-6 mx-auto'>
             <Col className='main-container align-items-center justify-content-center d-flex flex-column'>
                 {secretURL ? (
-                    <URLContainer title={"Share this encrypted URL with someone to receive a secret"} url={secretURL} copyBtnText={copyBtnText} onCopyURL={onCopyURL} />
+                    <URLContainer reGenerateURL={reGenerateURL} page="decrypt" title={"Share this encrypted URL with someone to receive a secret"} url={secretURL} copyBtnText={copyBtnText} onCopyURL={() => copyToClipboard(secretURL)} />
                 ) : null}
                 <div className="w-100 d-flex align-items-center justify-content-center gap-2 mb-5">
                     <Form.Control as={"input"} placeholder={"Enter encrypted text"} value={text} id="text" className='fs-14' onChange={(e) => setText(e.target.value)} />
@@ -71,10 +62,11 @@ export default function Decrypt({ pKey: publicKey }) {
                         <div className='d-flex flex-column gap-3 decryptBox mb-5 align-items-center justify-content-center text-center'>
                             <h6>The decrypted secret shared with you is displayed below</h6>
                             <Form.Control as={"textarea"} placeholder={"Decrypted text"} value={decryptedText} id="decryptedText" className='w-80 fs-14' readOnly />
-                            <Button className='copyText' onClick={onDecryptCopyURL}>{decryptedCopyBtnText}</Button>
+                            <Button className='copyText' onClick={() => copyToClipboard(decryptedText)}>{copyBtnText}</Button>
                         </div>
                     ) : null
                 }
+                {error && <div className="error">{error}</div>}
             </Col>
         </Row>
     )

@@ -217,93 +217,17 @@ button {
   color: #B0B0B0;
 }
 
-@media only screen and (max-width: 600px) {
-  .copyURL {
-    width: 35%;
-  }
-
-  .copyText {
-    width: 25% !important;
-  }
-
-  .url-copy-container p {
-    width: 65%;
-  }
-  
-}
-
-@media only screen and (min-width: 1024px) and (max-width: 1024px) {
-  .main-container {
-    padding: 0 !important;
-  }
-}
-
-@media only screen and (min-width: 601px) and (max-width: 1023px) {
-  .copyURL {
-    width: 20%;
-  }
-  .main-container {
-    padding: 0 100px !important;
-  }
-}
-
-@media screen and (min-width: 1025px) {
-  .copyURL {
-    width: 20%;
-  }
-  .main-container {
-    padding: 0 100px !important;
-  }
-}
-
-#r_password {
-  color: #1E1E1E;
-  font-size: 16px;
-  border: none;
-  background-color: #f5f5f5;
-  cursor: pointer;
-  width: 15%;
-  border-radius: 12px 0 0 12px;
-}
-
-#r_password:hover {
-  background-color: #F0F0F0;
-}
-
 .copyURL:hover {
   background-color: #218838;
 }
 
-#r_password:focus {
-  border: none;
-}
-
-#basic-addon2 {
+.cursor-pointer {
   cursor: pointer;
 }
 
-.password_container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 30px;
-  gap: 50px;
-}
-
-.password_container div {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.set_password {
-  width: 120px !important;
-  color: #D83C3C;
-}
-
-.password-wrapper {
-  position: relative;
-  display: inline-block;
+.github-link {
+  height: 25px;
+  width: 25px;
 }
 
 .name-input {
@@ -336,7 +260,8 @@ button {
 
 .popup {
   position: absolute;
-  right: -185px;
+  width: 200px;
+  right: -145px;
   top: 0;
   border-radius: 8px;
   transform: translateX(-50%);
@@ -358,7 +283,7 @@ button {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
 
-.popupInner > input {
+.popupInner>input {
   width: 150px;
 }
 
@@ -413,4 +338,45 @@ select:focus {
 
 .fs-14 {
   font-size: 14px !important;
+}
+
+@media only screen and (max-width: 600px) {
+  .copyURL {
+    width: 35%;
+  }
+
+  .copyText {
+    width: 25% !important;
+  }
+
+  .url-copy-container p {
+    width: 65%;
+  }
+
+}
+
+@media only screen and (min-width: 1024px) and (max-width: 1024px) {
+  .main-container {
+    padding: 0 !important;
+  }
+}
+
+@media only screen and (min-width: 601px) and (max-width: 1023px) {
+  .copyURL {
+    width: 20%;
+  }
+
+  .main-container {
+    padding: 0 100px !important;
+  }
+}
+
+@media screen and (min-width: 1025px) {
+  .copyURL {
+    width: 20%;
+  }
+
+  .main-container {
+    padding: 0 100px !important;
+  }
 }
