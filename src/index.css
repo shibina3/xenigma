@@ -307,13 +307,12 @@ button {
   display: inline-block;
 }
 
+.name-input {
+  width: 145px !important;
+}
+
 .eye-icon {
-  position: absolute;
-  top: 50%;
-  right: 115px;
-  transform: translateY(-50%);
   cursor: pointer;
-  z-index: 1;
   opacity: 0.5;
 }
 

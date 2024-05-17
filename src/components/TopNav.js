@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react'
 import { MdKeyboardArrowDown, MdKeyboardArrowUp } from "react-icons/md";
-import { Button, Col, Overlay, Tooltip, OverlayTrigger, Form } from 'react-bootstrap';
+import { Button, Col, Overlay, Tooltip, OverlayTrigger, Form, InputGroup } from 'react-bootstrap';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 export default function TopNav() {
     const popupRef = useRef(null);
@@ -16,6 +17,7 @@ export default function TopNav() {
     const [password, setPassword] = useState(localStorage.getItem('password') || '');
     const [isNameUpdated, setIsNameUpdated] = useState(false);
     const [isPassUpdated, setIsPassUpdated] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
 
     useEffect(() => {
         if (username !== localStorage.getItem('username')) {
@@ -74,9 +76,9 @@ export default function TopNav() {
                                         trigger='click'
                                         overlay={
                                             <Tooltip id='tooltip position-relative'>
-                                                <div className='popupInner'>
+                                                <div ref={nameBtnRef} className='popupInner'>
                                                     <Form.Control type='text' ref={nameRef} defaultValue={username} onChange={() => setIsNameUpdated(true)} />
-                                                    <Button ref={nameBtnRef} className='color-black fs-14 text-decoration-none' variant="link color-white" onClick={() => updateUserDetails('user')} disabled={!isNameUpdated}>Update</Button>
+                                                    <Button className='color-black fs-14 text-decoration-none' variant="link color-white" onClick={() => updateUserDetails('user')} disabled={!isNameUpdated}>Update</Button>
                                                 </div>
                                             </Tooltip>
                                         }
@@ -92,9 +94,22 @@ export default function TopNav() {
                                         rootClose={true}
                                         overlay={
                                             <Tooltip id='tooltip position-relative'>
-                                                <div className='popupInner'>
-                                                    <Form.Control type='text' ref={passwordRef} defaultValue={password} onChange={() => setIsPassUpdated(true)} />
-                                                    <Button ref={passBtnRef} className='color-black fs-14 text-decoration-none' variant="link color-white" onClick={() => updateUserDetails('password')} disabled={!isPassUpdated}>Update</Button>
+                                                <div ref={passBtnRef} className='popupInner'>
+                                                    <InputGroup className="mb-3 name-input">
+                                                        <Form.Control
+                                                            type={showPassword ? 'text' : 'password'} 
+                                                            ref={passwordRef} 
+                                                            defaultValue={password} 
+                                                            onChange={() => setIsPassUpdated(true)} 
+                                                            placeholder="Type a password"
+                                                            aria-label="Type a password"
+                                                            aria-describedby="basic-addon2"
+                                                        />
+                                                        <InputGroup.Text id="basic-addon2">{
+                                                            showPassword ? <FaEye onClick={() => {setShowPassword(!showPassword); passwordRef.current.type = 'text'}} /> : <FaEyeSlash onClick={() => {setShowPassword(!showPassword); passwordRef.current.type = 'text'}} />
+                                                        }</InputGroup.Text>
+                                                    </InputGroup>
+                                                    <Button className='color-black fs-14 text-decoration-none' variant="link color-white" onClick={() => updateUserDetails('password')} disabled={!isPassUpdated}>Update</Button>
                                                 </div>
                                             </Tooltip>
                                         }
