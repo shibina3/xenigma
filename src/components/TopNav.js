@@ -79,7 +79,7 @@ export default function TopNav({page, reGenerateURL}) {
 
     return (
         <Col className='d-flex justify-content-end mt-2 gap-3 align-items-center'>
-            <OverlayTrigger placement='bottom' overlay={<Tooltip id='tooltip'>Xengima</Tooltip>} >
+            <OverlayTrigger placement='bottom' overlay={<Tooltip id='tooltip'>XEngima</Tooltip>} >
                 <a className='color-black' href='https://github.com/shibina3/xenigma' target='_blank' rel='noopener noreferrer'>
                     <FaGithub className='github-link' />
                 </a>

@@ -1,5 +1,5 @@
 # XEnigma
-[![Release Status](https://github.com/shibina3/xenigma/actions/workflows/release.yml/badge.svg)](https://github.com/shibina3/xenigma/actions/workflows/release.yml)
+[![Deployment Status](https://github.com/shibina3/xenigma/actions/workflows/deploy.yaml/badge.svg)](https://github.com/shibina3/xenigma/actions/workflows/deploy.yaml)
 [![License](https://img.shields.io/github/license/shibina3/xenigma)](https://github.com/shibina3/xenigma/blob/main/LICENSE)
 
 ## What is it?
