@@ -97,7 +97,7 @@ export default function TopNav({page, reGenerateURL}) {
                 {(props) => (
                     <Tooltip placement='bottom' id="overlay" {...props}>
                         <div className="popup color-black">
-                            <div className="popup-title">Update User Details</div>
+                            <div className="popup-title">Update Info</div>
                             <div className="popup-content">
                                 <div className="user-details">
                                     <OverlayTrigger
@@ -115,7 +115,7 @@ export default function TopNav({page, reGenerateURL}) {
                                     >
                                         <Button ref={updateUserRef} className='drop-btn color-black fs-14'
                                             onClick={() => setShowPopup(prevState => ({...prevState, child: !showPopup.child}))} variant="link">
-                                            Update name
+                                            User Name
                                         </Button>
                                     </OverlayTrigger>
                                     <OverlayTrigger
@@ -162,7 +162,7 @@ export default function TopNav({page, reGenerateURL}) {
                                     >
                                         <Button ref={updatePassRef} className='drop-btn color-black fs-14'
                                             onClick={() => setShowPopup(prevState => ({...prevState, child: !showPopup.child}))} variant="link">
-                                            Update key/password
+                                            Password/Key
                                         </Button>
                                     </OverlayTrigger>
                                 </div>
