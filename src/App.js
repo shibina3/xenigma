@@ -6,19 +6,20 @@ import xipher from './xipher';
 import { Container, Row, Col } from 'react-bootstrap';
 import TopNav from './components/TopNav';
 
-const reGenerateURL = async (type, publicKey, setSecretURL, url) => {
-    if (type === 'xipherSecret') {
-        url += '?pk=' + publicKey + (localStorage.getItem('username') && localStorage.getItem('username').toLowerCase() !== 'user' ? '&u=' + localStorage.getItem('username') : '');
-        setSecretURL(url);
-    } else if (type === 'password') {
-        if (!localStorage.getItem('password')) return alert('Please set a password in User Settings to use this option');
-        try {
-            setSecretURL(url + '?pk=' + await xipher.getPublicKey(localStorage.getItem('password')));
-        } catch (err) {
-            console.error('Failed to generate public key: ', err);
-            alert(err)
-        }
-    }
+const reGenerateURL = async (type, setPublicKey, publicKey, setSecretURL, url, username) => {
+   let public_key = publicKey
+   if(type === 'password') {
+    public_key = await xipher.getPublicKey(localStorage.getItem('xipherSecret'));
+    setPublicKey(public_key);
+   } else if (type === 'xipherSecret') {
+    let xSecret = await xipher.newSecretKey();
+    localStorage.setItem('xipherSecret', xSecret);
+    public_key = await xipher.getPublicKey(xSecret);
+    setPublicKey(public_key);
+   }
+
+   const urlSuffix = username && username.toLowerCase() !== 'user' ? `&u=${username}` : '';
+   setSecretURL(`${url}?pk=${publicKey}${urlSuffix}`);
 }
 
 export default function App() {
@@ -27,8 +28,8 @@ export default function App() {
     const [requester, setRequester] = useState('');
     const [page, setPage] = useState('');
     const [secretURL, setSecretURL] = useState('');
-
-    const url = useMemo(() => window.location.href.endsWith('/') ? window.location.href.slice(0, -1) : window.location.href, []);
+    const [cipherText, setCipherText] = useState('');
+    const [username, setUsername] = useState(localStorage.getItem('username') || 'User');
 
     useEffect(() => {
         const fetchPageDetails = async () => {
@@ -37,33 +38,37 @@ export default function App() {
                 xSecret = await xipher.newSecretKey();
                 localStorage.setItem('xipherSecret', xSecret);
             }
-
-            let publicKey = await xipher.getPublicKey(xSecret);
-            setPublicKey(publicKey);
+    
+            let public_key = await xipher.getPublicKey(xSecret);
+            setPublicKey(public_key);
 
             if (location.search) {
                 const searchParams = new URLSearchParams(location.search);
                 const pKey = searchParams.get('pk');
                 const user = searchParams.get('u');
+                const ct = searchParams.get('ct');
                 if (user) setRequester(user);
                 if (pKey) {
                     setPublicKey(pKey);
                     setPage('encrypt');
                     return
                 }
+                if(ct) setCipherText(ct);
             }
-
             setPage('decrypt');
         }
         fetchPageDetails();
     }, [location.search])
 
-    const handleReGenerateURL = useCallback((type) => reGenerateURL(type, publicKey, setSecretURL, url), [publicKey, setSecretURL, url]);
+    const url = useMemo(() => window.location.href.endsWith('/') ? window.location.href.slice(0, -1) : window.location.href, []);
+
+    const handleReGenerateURL = useCallback((type, username) => reGenerateURL(type, setPublicKey, publicKey, setSecretURL, url, username), [publicKey, url]);
+
 
     return (
         <Container fluid>
             <Row>
-                <TopNav page={page} reGenerateURL={handleReGenerateURL} />
+                <TopNav username={username} setUsername={setUsername} setPublicKey={setPublicKey} page={page} handleReGenerateURL={handleReGenerateURL} />
             </Row>
             <Row>
                 <Col>
@@ -75,8 +80,9 @@ export default function App() {
             </Row>
             {
                 {
-                    'decrypt': <Decrypt reGenerateURL={handleReGenerateURL} secretURL={secretURL} setSecretURL={setSecretURL} pKey={publicKey} page={page} />,
-                    'encrypt': <Encrypt page={page} requester={requester} pKey={publicKey} />
+                    'decrypt': <Decrypt requester={requester} cipherText={cipherText} secretURL={secretURL} setSecretURL={setSecretURL} pKey={publicKey} page={page} />,
+                    'encrypt': <Encrypt username={username} page={page} requester={requester} pKey={publicKey} />,
+                    '': <div id="loading-bar-spinner" className="spinner"><div className="spinner-icon"></div></div>
                 }[page]
             }
         </Container>

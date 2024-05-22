@@ -1,10 +1,11 @@
-import React, { useRef, useEffect, useState, useCallback } from 'react'
+import React, { useRef, useEffect, useState } from 'react'
 import { MdKeyboardArrowDown, MdKeyboardArrowUp } from "react-icons/md";
 import { Button, Col, Overlay, Tooltip, OverlayTrigger, Form, InputGroup, Spinner } from 'react-bootstrap';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { FaGithub } from "react-icons/fa6";
+import { GrUpdate, GrPowerReset } from "react-icons/gr";
 
-export default function TopNav({page, reGenerateURL}) {
+export default function TopNav({ page, handleReGenerateURL, username, setUsername}) {
     const popupRef = useRef(null);
     const nameRef = useRef(null);
     const passwordRef = useRef(null);
@@ -16,51 +17,53 @@ export default function TopNav({page, reGenerateURL}) {
         parent: false,
         child: false
     });
-    const [userDetails, setUserDetails] = useState({
-        username: localStorage.getItem('username') || 'User',
-        password: localStorage.getItem('password') || ''
-    });
-    const [isUpdated, setIsUpdated] = useState({
-        username: false,
-        password: false
-    });
+    const [isUpdated, setIsUpdated] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
-    const [regenText, setRegenText] = useState('Re-generate URL');
+    const [regenText, setRegenText] = useState('Update');
+    const [isLoading, setIsLoading] = useState(false);
 
-    useEffect(() => {
-        if (userDetails.username !== localStorage.getItem('username')) {
-            setIsUpdated(prevState => ({ ...prevState, username: true }));
-        }
-        if (userDetails.password !== localStorage.getItem('password')) {
-            setIsUpdated(prevState => ({ ...prevState, password: true }));
-        }
-    }, [userDetails])
-
-    const updateUserDetails = useCallback((type) => {
+    const updateUserDetails = (type, callback) => {
         return new Promise((resolve) => {
-            let updatedDetails = { ...userDetails };
             if (type === 'user') {
-                updatedDetails.username = nameRef.current.value || 'User';
-                localStorage.setItem('username', updatedDetails.username);
+                let userName = nameRef.current.value || 'User'
+                localStorage.setItem('username', userName);
+                setUsername(userName);
+                if(callback) {
+                    callback(userName);
+                }
             } else {
-                updatedDetails.password = passwordRef.current.value;
-                localStorage.setItem('password', updatedDetails.password);
+                localStorage.setItem('xipherSecret', passwordRef.current.value);
             }
-            setUserDetails(updatedDetails);
-            setIsUpdated({ username: false, password: false });
+            setIsUpdated(false);
             resolve();
         });
-    }, [userDetails]);
+    };
 
+    const handleNameUpdate = async () => {
+        setTimeout(async () => {
+            await updateUserDetails('user', async (updatedUsername) => {
+                if(page === 'decrypt') await handleReGenerateURL('username',updatedUsername);
+            });
+        }, 0);
+    }
 
-    const handleRegenerate = async () => { 
-        setRegenText('loading'); 
+    const handleRegenerate = async (page) => {
+        setRegenText('loading');
         setTimeout(async () => {
             await updateUserDetails('password');
-            await reGenerateURL('password');
-            setRegenText('Re-generate URL');
+            if (page === 'decrypt') await handleReGenerateURL('password');
+            setRegenText('Update');
         }, 0);
     };
+
+    const resetPassword = () => {
+        setIsLoading(true);
+        setTimeout(async () => {
+            await handleReGenerateURL('xipherSecret');
+            setIsLoading(false);
+            passwordRef.current.value = localStorage.getItem('xipherSecret');
+        }, 1000);
+    }
 
     useEffect(() => {
         function handleClickOutside(event) {
@@ -89,11 +92,11 @@ export default function TopNav({page, reGenerateURL}) {
                     <FaGithub className='github-link' />
                 </a>
             </OverlayTrigger>
-            <Button variant='secondary' size='md' className="arrow-container color-black mt-2" ref={popupRef} onClick={() => setShowPopup(prevState => ({...prevState, parent:!showPopup.parent}))}>
+            <Button variant='secondary' size='md' className="arrow-container color-black mt-2" ref={popupRef} onClick={() => setShowPopup(prevState => ({ ...prevState, parent: !showPopup.parent }))}>
                 {showPopup.parent ? <MdKeyboardArrowUp /> : <MdKeyboardArrowDown />}
-                <span>Hi <span className={userDetails.username !== 'User' ? 'bold-500' : ''}>{userDetails.username}</span>!</span>
+                <span>Hi <span className={username !== 'User' ? 'bold-500' : ''}>{username}</span>!</span>
             </Button>
-            <Overlay target={popupRef.current} show={showPopup.parent} placement="bottom" onHide={() => setShowPopup(prevState => ({...prevState, parent: false}))}>
+            <Overlay target={popupRef.current} show={showPopup.parent} placement="bottom" onHide={() => setShowPopup(prevState => ({ ...prevState, parent: false }))}>
                 {(props) => (
                     <Tooltip placement='bottom' id="overlay" {...props}>
                         <div className="popup color-black">
@@ -107,14 +110,14 @@ export default function TopNav({page, reGenerateURL}) {
                                         overlay={
                                             <Tooltip id='tooltip position-relative'>
                                                 <div ref={nameBtnRef} className='popupInner'>
-                                                    <Form.Control type='text' ref={nameRef} defaultValue={userDetails.username} onChange={() => setIsUpdated(prevState => ({...prevState, name: true}))} />
-                                                    <Button className='color-black fs-14 text-decoration-none' variant="link color-white" onClick={() => updateUserDetails('user')} disabled={!isUpdated.name}>Update</Button>
+                                                    <Form.Control type='text' ref={nameRef} defaultValue={username || 'User'} onChange={() => setIsUpdated(true)} />
+                                                    <Button className='color-black fs-14 text-decoration-none' variant="link color-white" onClick={() => {handleNameUpdate()}} disabled={!isUpdated}>Update</Button>
                                                 </div>
                                             </Tooltip>
                                         }
                                     >
                                         <Button ref={updateUserRef} className='drop-btn color-black fs-14'
-                                            onClick={() => setShowPopup(prevState => ({...prevState, child: !showPopup.child}))} variant="link">
+                                            onClick={() => setShowPopup(prevState => ({ ...prevState, child: !showPopup.child }))} variant="link">
                                             User Name
                                         </Button>
                                     </OverlayTrigger>
@@ -130,8 +133,7 @@ export default function TopNav({page, reGenerateURL}) {
                                                             className='fs-14'
                                                             type={showPassword ? 'text' : 'password'}
                                                             ref={passwordRef}
-                                                            defaultValue={userDetails.password}
-                                                            onChange={() => setIsUpdated(prevState => ({ ...prevState, password: true }))}
+                                                            defaultValue={localStorage.getItem('xipherSecret')}
                                                             placeholder="password"
                                                             aria-label="password"
                                                             aria-describedby="basic-addon2"
@@ -141,27 +143,30 @@ export default function TopNav({page, reGenerateURL}) {
                                                         }</InputGroup.Text>
                                                     </InputGroup>
                                                     <div className='d-flex flex-column'>
-                                                    <Button className='color-black fs-14 text-decoration-none' variant="link color-white" onClick={() => updateUserDetails('password')} disabled={!isUpdated.password}>Update</Button>
-                                                    {
-                                                        page === 'decrypt' ? <OverlayTrigger
-                                                        placement='bottom'
-                                                        overlay={
-                                                            <Tooltip id='tooltip position-relative'>Re-generate url with your password</Tooltip>}
+                                                        <OverlayTrigger
+                                                            placement='bottom'
+                                                            overlay={<Tooltip id='tooltip'>Updating password will replace your existing secret</Tooltip>}
                                                         >
-                                                            <Button className='color-black fs-14 text-decoration-none' variant="link color-white" onClick={handleRegenerate}
-                                                            >{regenText === 'loading' ?
-                                                            <Spinner animation="border" role="status" size="sm">
-                                                            <span className="visually-hidden">Loading...</span>
-                                                          </Spinner>: regenText }</Button>
-                                                        </OverlayTrigger> : null
-                                                    }
+                                                            <Button className='d-flex justify-content-center align-items-center gap-2 color-black fs-14 text-decoration-none' variant="link color-white" onClick={() => handleRegenerate(page)}>Update {regenText === 'loading' ?
+                                                                <Spinner animation="border" role="status" size="sm">
+                                                                    <span className="visually-hidden">Loading...</span>
+                                                                </Spinner> : <GrUpdate />}
+                                                            </Button>
+                                                        </OverlayTrigger>
+                                                        <Button className='d-flex  justify-content-center align-items-center gap-2 color-black fs-14 text-decoration-none' variant="link color-white" onClick={resetPassword}>
+                                                            Reset {
+                                                                isLoading ? <Spinner className='color-black' animation="border" role="status" size="sm">
+                                                                    <span className="visually-hidden">Loading...</span>
+                                                                </Spinner> : <GrPowerReset className='reset-icon' />
+                                                            }
+                                                        </Button>
                                                     </div>
                                                 </div>
                                             </Tooltip>
                                         }
                                     >
                                         <Button ref={updatePassRef} className='drop-btn color-black fs-14'
-                                            onClick={() => setShowPopup(prevState => ({...prevState, child: !showPopup.child}))} variant="link">
+                                            onClick={() => setShowPopup(prevState => ({ ...prevState, child: !showPopup.child }))} variant="link">
                                             Password/Key
                                         </Button>
                                     </OverlayTrigger>
