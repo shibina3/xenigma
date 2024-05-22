@@ -64,9 +64,9 @@ const Encrypt = ({ pKey: publicKey, requester, page, username }) => {
 
     return (
         <Row className='col-lg-6 mx-auto main-container'>
-            <p className='text-center'>A secret has been requested{requester ? <span> by <b>{requester}</b></span> : ''}. <br />Only the requester will have access to the information you provide.</p>
+            <p className='text-center'>A secret has been requested{requester ? <span> by <b>{requester}</b></span> : ''}.</p>
             <div className="text-wrapper mb-5">
-                <Form.Control as="textarea" className='w-100 fs-14' id="textarea" value={text} placeholder={"Enter the information you wish to share"} onChange={handleTextChange} />
+                <Form.Control as="textarea" className='w-100 fs-14' id="textarea" value={text} placeholder={"Enter the text you wish to encrypt"} onChange={handleTextChange} />
                 <button className="button encrypt" onClick={() => {
                     setIsEncrypted(false);
                     setIsLoading(true);
@@ -80,7 +80,7 @@ const Encrypt = ({ pKey: publicKey, requester, page, username }) => {
                 isLoading ? <div className='position-relative'><div id="loading-bar-spinner" className="spinner"><div className="spinner-icon"></div></div></div> : null
             }
             {
-                isEncrypted ? <URLContainer page={page} copyBtnText={copyBtnText} onCopyURL={() => copyToClipboard(encryptedText, true)} url={encryptedText} title={type === 'text' ? "Share this secret with the requester for a secure and confidential transmission" : "Share this url with the requester for a secure and confidential transmission"} /> : null
+                isEncrypted ? <URLContainer page={page} copyBtnText={copyBtnText} onCopyURL={() => copyToClipboard(encryptedText, true)} url={encryptedText} title={type === 'text' ? "Share this encrypted text with the requester" : "Share this url with the requester"} /> : null
             }
         </Row>
     );

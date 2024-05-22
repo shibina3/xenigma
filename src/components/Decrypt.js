@@ -41,9 +41,11 @@ export default function Decrypt({ pKey: publicKey, secretURL, setSecretURL, ciph
             setDecryptedText(decryptedText);
             setIsDecrypted(true);
         } catch (err) {
-            if (err.message.includes('decryption failed, password required')) {
-                setError('Password authentication failed. Please enter the correct password to decrypt the secret');
-            } else {
+            if (err.message.includes('password required')) {
+                setError('Decryption failed: Please ensure you are using the right browser or set the password using the option from the top right corner.');
+            } else if (err.message.includes('decrypter failed')) {
+                setError('Decryption failed: Please ensure you are using the right browser.');
+            }  else {
                 setError(err.message);
             }
         } finally {
@@ -70,7 +72,7 @@ export default function Decrypt({ pKey: publicKey, secretURL, setSecretURL, ciph
                 <p>{error}</p>
             </div> : <Col className='main-container align-items-center justify-content-center d-flex flex-column'>
                 {secretURL && !cipherText ? (
-                    <URLContainer page="decrypt" title={"Share this encrypted URL with someone to receive a secret"} url={secretURL} copyBtnText={copyBtnText} onCopyURL={() => copyToClipboard(secretURL)} />
+                    <URLContainer page="decrypt" title={"Share this URL with someone to receive a secret"} url={secretURL} copyBtnText={copyBtnText} onCopyURL={() => copyToClipboard(secretURL)} />
                 ) : null}
                 {
                     !cipherText ? <div className="w-100 d-flex align-items-center justify-content-center gap-2 mb-5">

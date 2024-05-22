@@ -17,7 +17,6 @@ const reGenerateURL = async (type, setPublicKey, publicKey, setSecretURL, url, u
     public_key = await xipher.getPublicKey(xSecret);
     setPublicKey(public_key);
    }
-
    const urlSuffix = username && username.toLowerCase() !== 'user' ? `&u=${username}` : '';
    setSecretURL(`${url}?pk=${publicKey}${urlSuffix}`);
 }
@@ -73,9 +72,7 @@ export default function App() {
             <Row>
                 <Col>
                     <h1 className='text-center mt-5 mb-3'>XEnigma</h1>
-                    <h3 className='text-center'>Secure Secrets Exchange</h3>
-                    <br />
-                    <p className='text-center mt-3 mb-5'>With XEnigma, you can request and share secrets <br />securely, ensuring that your data remains private and never touches a server.</p>
+                    <p className='text-center mt-3 mb-5'>XEnigma is a web based, fully client-side encryption tool that allows users securely share secrets<br/> without having the need to install any software.</p>
                 </Col>
             </Row>
             {
