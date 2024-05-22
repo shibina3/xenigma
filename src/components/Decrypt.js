@@ -35,9 +35,18 @@ export default function Decrypt({ pKey: publicKey, secretURL, setSecretURL, ciph
     const onDecryptText = useCallback(async () => {
         setIsLoading(true);
         try {
-            if (!text) return alert('Please enter encrypted text to decrypt')
+            if (!text) return alert('Please enter encrypted text to decrypt');
+            let encryptedData;
+            try {
+                let url = new URL(text);
+                let params = new URLSearchParams(url.search);
+                let ct = params.get('ct');
+                encryptedData = ct;
+            } catch (err) {
+                encryptedData = text;
+            }
             let xSecret = localStorage.getItem('xipherSecret');
-            let decryptedText = await xipher.decryptStr(xSecret, text);
+            let decryptedText = await xipher.decryptStr(xSecret, encryptedData);
             setDecryptedText(decryptedText);
             setIsDecrypted(true);
         } catch (err) {
@@ -76,7 +85,7 @@ export default function Decrypt({ pKey: publicKey, secretURL, setSecretURL, ciph
                 ) : null}
                 {
                     !cipherText ? <div className="w-100 d-flex align-items-center justify-content-center gap-2 mb-5">
-                        <Form.Control as={"input"} placeholder={"Enter encrypted text"} value={text} id="text" className='fs-14' onChange={(e) => setText(e.target.value)} />
+                        <Form.Control as={"input"} placeholder={"Enter encrypted data or url"} value={text} id="text" className='fs-14' onChange={(e) => setText(e.target.value)} />
                         <Button className='w-25 h-60' onClick={() => {
                             setIsDecrypted(false);
                             setIsLoading(true);

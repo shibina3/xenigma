@@ -3,6 +3,7 @@ import xipher from '../xipher';
 import { IoLockClosed } from "react-icons/io5";
 import URLContainer from './URLContainer';
 import { Row, Form } from 'react-bootstrap';
+import { MdOutlineErrorOutline } from "react-icons/md";
 
 const useClipboard = (initialText) => {
     const [copyBtnText, setCopyBtnText] = useState(initialText);
@@ -30,6 +31,7 @@ const Encrypt = ({ pKey: publicKey, requester, page, username }) => {
     const [copyBtnText, copyToClipboard] = useClipboard('Copy', false);
     const [isLoading, setIsLoading] = useState(false);
     const [type, setType] = useState('');
+    const [error, setError] = useState('');
 
     const handleTextChange = (e) => {
         setText(e.target.value);
@@ -60,6 +62,7 @@ const Encrypt = ({ pKey: publicKey, requester, page, username }) => {
         setEncryptedText(encrypted_text);
         setIsEncrypted(true);
         copyToClipboard(encrypted_text, false);
+        setText('');
     }
 
     return (
@@ -68,6 +71,12 @@ const Encrypt = ({ pKey: publicKey, requester, page, username }) => {
             <div className="text-wrapper mb-5">
                 <Form.Control as="textarea" className='w-100 fs-14' id="textarea" value={text} placeholder={"Enter the text you wish to encrypt"} onChange={handleTextChange} />
                 <button className="button encrypt" onClick={() => {
+                    if(text.trim() === '') {
+                        setError('Please enter a text to encrypt');
+                        setIsEncrypted(false);
+                        return;
+                    } 
+                    setError('');
                     setIsEncrypted(false);
                     setIsLoading(true);
                     setTimeout(() => {
@@ -76,6 +85,12 @@ const Encrypt = ({ pKey: publicKey, requester, page, username }) => {
                     }, 0);
                 }}>Encrypt <IoLockClosed /></button>
             </div>
+            {
+                error ? <div className="d-flex flex-column justify-content-center align-items-center gap-4 color-red error p-3 text-center ">
+                    <MdOutlineErrorOutline />
+                    <p>{error}</p>
+                </div> : null
+            }
             {
                 isLoading ? <div className='position-relative'><div id="loading-bar-spinner" className="spinner"><div className="spinner-icon"></div></div></div> : null
             }
