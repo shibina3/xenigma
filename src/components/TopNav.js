@@ -81,7 +81,12 @@ export default function TopNav({ page, handleReGenerateURL, username, setUsernam
     }, [popupRef, updateUserRef, updatePassRef, nameRef, passwordRef, nameBtnRef, passBtnRef]);
 
     return (
-        <Col className='d-flex justify-content-end mt-2 gap-3 align-items-center'>
+        <Col className='d-flex justify-content-between align-items-center'>
+            <div className='d-flex align-items-center gap-2 mt-2 justify-content-center'>
+                <img src='/xenigma.svg' className='xenigma-logo' alt='xenigma' />
+                <h2 className='text-center mb-0'>XEnigma</h2>
+            </div>
+            <div className='d-flex justify-content-end mt-2 gap-3 align-items-center'>
             <OverlayTrigger placement='bottom' overlay={<Tooltip id='tooltip'>XEngima</Tooltip>} >
                 <a className='color-black' href='https://github.com/shibina3/xenigma' target='_blank' rel='noopener noreferrer'>
                     <FaGithub className='github-link' />
@@ -176,6 +181,7 @@ export default function TopNav({ page, handleReGenerateURL, username, setUsernam
                     </Tooltip>
                 )}
             </Overlay>
+            </div>
         </Col>
     )
 }

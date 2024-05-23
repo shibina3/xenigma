@@ -402,3 +402,48 @@ select:focus {
   border: 1px dashed #bd0606;
   border-radius: 10px;
 }
+
+.white-tooltip>.tooltip-inner {
+  background-color: #FFFFFF !important;
+  border: 1px solid #bbbbbb !important;
+  color: black !important;
+  padding: 10px !important;
+}
+
+.white-tooltip>.tooltip-arrow::before {
+  border-top-color: #bbbbbb !important;
+}
+
+.social-sharing>svg {
+  width: 1.5em !important;
+  height: 1.5em !important;
+}
+
+.whatsapp {
+  color: #25D366;
+}
+
+.telegram {
+  color: #24A1DE;
+}
+
+.mail {
+  color: 	#c71610;
+}
+
+.teams {
+  color: #4f42b5;
+}
+
+.fw-500 {
+  font-weight: 500;
+}
+
+.mt-6 {
+  margin-top: 80px;
+}
+
+.xenigma-logo {
+  width: 35px;
+  height: 35px;
+}

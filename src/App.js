@@ -71,8 +71,7 @@ export default function App() {
             </Row>
             <Row>
                 <Col>
-                    <h1 className='text-center mt-5 mb-3'>XEnigma</h1>
-                    <p className='text-center mt-3 mb-5'>XEnigma is a web based, fully client-side encryption tool that allows users securely share secrets<br/> without having the need to install any software.</p>
+                    <p className='text-center mt-6 mb-5'>XEnigma is a web based, fully client-side encryption tool that allows users securely share secrets<br/> without having the need to install any software.</p>
                 </Col>
             </Row>
             {

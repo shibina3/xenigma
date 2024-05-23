@@ -81,7 +81,7 @@ export default function Decrypt({ pKey: publicKey, secretURL, setSecretURL, ciph
                 <p>{error}</p>
             </div> : <Col className='main-container align-items-center justify-content-center d-flex flex-column'>
                 {secretURL && !cipherText ? (
-                    <URLContainer page="decrypt" title={"Share this URL with someone to receive a secret"} url={secretURL} copyBtnText={copyBtnText} onCopyURL={() => copyToClipboard(secretURL)} />
+                    <URLContainer page="decrypt" content={secretURL} contentTitle={"Encryption URL"} title={"Share this URL with someone to receive a secret"} url={secretURL} copyBtnText={copyBtnText} onCopyURL={() => copyToClipboard(secretURL)} />
                 ) : null}
                 {
                     !cipherText ? <div className="w-100 d-flex align-items-center justify-content-center gap-2 mb-5">

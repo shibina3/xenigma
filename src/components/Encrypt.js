@@ -95,7 +95,7 @@ const Encrypt = ({ pKey: publicKey, requester, page, username }) => {
                 isLoading ? <div className='position-relative'><div id="loading-bar-spinner" className="spinner"><div className="spinner-icon"></div></div></div> : null
             }
             {
-                isEncrypted ? <URLContainer page={page} copyBtnText={copyBtnText} onCopyURL={() => copyToClipboard(encryptedText, true)} url={encryptedText} title={type === 'text' ? "Share this encrypted text with the requester" : "Share this url with the requester"} /> : null
+                isEncrypted ? <URLContainer page={page} content={encryptedText} contentTitle={"Encrypted Data"} copyBtnText={copyBtnText} onCopyURL={() => copyToClipboard(encryptedText, true)} url={encryptedText} title={type === 'text' ? "Share this encrypted text with the requester" : "Share this url with the requester"} /> : null
             }
         </Row>
     );
