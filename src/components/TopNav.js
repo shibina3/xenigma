@@ -83,7 +83,7 @@ export default function TopNav({ page, handleReGenerateURL, username, setUsernam
     return (
         <Col className='d-flex justify-content-between align-items-center'>
             <div className='d-flex align-items-center gap-2 mt-2 justify-content-center'>
-                <img src='/xenigma.svg' className='xenigma-logo' alt='xenigma' />
+                <img src='./xenigma.svg' className='xenigma-logo' alt='xenigma' />
                 <h2 className='text-center mb-0'>XEnigma</h2>
             </div>
             <div className='d-flex justify-content-end mt-2 gap-3 align-items-center'>
