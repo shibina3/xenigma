@@ -54,7 +54,7 @@ export default function Decrypt({ pKey: publicKey, secretURL, setSecretURL, ciph
                 setError('Decryption failed: Please ensure you are using the right browser or set the password using the option from the top right corner.');
             } else if (err.message.includes('decrypter failed')) {
                 setError('Decryption failed: Please ensure you are using the right browser.');
-            }  else {
+            } else {
                 setError(err.message);
             }
         } finally {
@@ -76,10 +76,7 @@ export default function Decrypt({ pKey: publicKey, secretURL, setSecretURL, ciph
 
     return (
         <Row className='col-lg-6 mx-auto'>
-            {error ? <div className="d-flex flex-column justify-content-center align-items-center gap-4 color-red error p-3 text-center ">
-                <MdOutlineErrorOutline />
-                <p>{error}</p>
-            </div> : <Col className='main-container align-items-center justify-content-center d-flex flex-column'>
+            <Col className='main-container align-items-center justify-content-center d-flex flex-column'>
                 {secretURL && !cipherText ? (
                     <URLContainer page="decrypt" content={secretURL} contentTitle={"Encryption URL"} title={"Share this URL with someone to receive a secret"} url={secretURL} copyBtnText={copyBtnText} onCopyURL={() => copyToClipboard(secretURL)} />
                 ) : null}
@@ -108,9 +105,12 @@ export default function Decrypt({ pKey: publicKey, secretURL, setSecretURL, ciph
                             <Form.Control as={"textarea"} placeholder={"Decrypted text"} value={decryptedText} id="decryptedText" className='w-80 fs-14' readOnly />
                             <Button className='copyText' onClick={() => copyToClipboard(decryptedText)}>{copyBtnText}</Button>
                         </div>
-                    ) : null
+                    ) : error ? <div className="d-flex flex-column justify-content-center align-items-center gap-4 color-red error p-3 text-center ">
+                        <MdOutlineErrorOutline />
+                        <p>{error}</p>
+                    </div> : null
                 }
-            </Col>}
+            </Col>
         </Row>
     )
 }
