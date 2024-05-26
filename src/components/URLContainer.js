@@ -9,11 +9,16 @@ export default function URLContainer({ url, title, onCopyURL, copyBtnText, conte
 
     const genericShare = async () => {
         setLoading(true);
-        await navigator.share({
-            title: contentTitle,
-            text: content
-        })
-        setLoading(false);
+        try {
+            await navigator.share({
+                title: contentTitle,
+                text: content
+            });
+        } catch (error) {
+            console.error('Error sharing: ', error);
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
