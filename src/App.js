@@ -5,7 +5,6 @@ import Decrypt from './components/Decrypt';
 import xipher from './xipher';
 import { Container, Row, Col } from 'react-bootstrap';
 import TopNav from './components/TopNav';
-import Footer from './components/Footer';
 
 const reGenerateURL = async (type, setPublicKey, publicKey, setSecretURL, url, username) => {
    let public_key = publicKey
@@ -66,7 +65,7 @@ export default function App() {
 
 
     return (
-        <Container fluid className='d-flex flex-column'>
+        <Container fluid>
             <Row>
                 <TopNav username={username} setUsername={setUsername} setPublicKey={setPublicKey} page={page} handleReGenerateURL={handleReGenerateURL} />
             </Row>
@@ -82,7 +81,6 @@ export default function App() {
                     '': <div id="loading-bar-spinner" className="spinner"><div className="spinner-icon"></div></div>
                 }[page]
             }
-            <Row><Footer /></Row>
         </Container>
     );
 }
